@@ -1,13 +1,52 @@
+<!-- ADD: display daily average for macros -->
+<!-- ADD: reset daily average -->
+<!-- ADD: display macro totals for the day -->
+<!-- ADD: reset macro totals -->
+<!-- CHANGE: display a list containing meal# and macros of each meal (refresh daily) -->
+
 {% extends "base.html" %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
 <h1>{{"Welcome, " + user.first_name + "!"}}</h1>
-<!-- ADD: display daily average for macros -->
-<!-- ADD: display macro total for the day -->
-<h3 align="center">Your Meals</h3>
-<!-- CHANGE: display a list containing meal# and macros of each meal (refresh daily) -->
+<br />
+<div class="row">
+    <div class="col-sm-6">
+        <div align="center" class="card" style="background-color: #272c31">
+            <div class="card-header">
+                <h5>Your Totals Today</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" style="background-color: #272c31">calories</li>
+                <li class="list-group-item" style="background-color: #272c31">protein</li>
+                <li class="list-group-item" style="background-color: #272c31">carbs</li>
+                <li class="list-group-item" style="background-color: #272c31">fat</li>
+            </ul>
+            <div class="card-body">
+                <a href="#" class="btn btn-primary">Reset Totals</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <div align="center" class="card" style="background-color: #272c31">
+            <div class="card-header">
+                <h5>Your Daily Averages</h5>
+            </div>
+            <ul class="list-group list-group-flush">
+                <li class="list-group-item" style="background-color: #272c31">calories</li>
+                <li class="list-group-item" style="background-color: #272c31">protein</li>
+                <li class="list-group-item" style="background-color: #272c31">carbs</li>
+                <li class="list-group-item" style="background-color: #272c31">fat</li>
+            </ul>
+            <div class="card-body">
+                <a href="#" class="btn btn-primary">Reset Averages</a>
+            </div>
+        </div>
+    </div>
+</div>
+<br />
+<h3 align="center">Your Meals Today</h3>
 <ul class="list-group list-group-flush" id="notes">
     {% for note in user.notes %}
     <li class="list-group-item">
