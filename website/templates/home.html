@@ -3,9 +3,13 @@
 {% block title %}Home{% endblock %}
 
 {% block content %}
-<h1 align="center">Notes</h1>
+<h1>{{"Welcome, " + user.first_name + "!"}}</h1>
+<!-- ADD: display daily average for macros -->
+<!-- ADD: display macro total for the day -->
+<h3 align="center">Your Meals</h3>
+<!-- CHANGE: display a list containing meal# and macros of each meal (refresh daily) -->
 <ul class="list-group list-group-flush" id="notes">
-    {% for note in user.notes  %}
+    {% for note in user.notes %}
     <li class="list-group-item">
         {{ note.data }}
         <button type="button" class="close" onClick="deleteNote({{ note.id }})">
@@ -15,10 +19,26 @@
     {% endfor %}
 </ul>
 <form method="POST">
-    <textarea name="note" id="note" class="form-control"></textarea>
+    <div class="form-group">
+        <textarea name="note" id="note" class="form-control" placeholder="List the contents of your meal here"></textarea>
+    </div>
+    <div class="form-row">
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Calories">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Protein (grams)">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Carbs (grams)">
+        </div>
+        <div class="col">
+            <input type="text" class="form-control" placeholder="Fat (grams)">
+        </div>
+    </div>
     <br />
     <div align="center">
-        <button type="submit" class="btn btn-primary">Add Note</button>
+        <button type="submit" class="btn btn-primary">Add Meal</button>
     </div>
 </form>
 {% endblock %}
