@@ -29,6 +29,7 @@ def login():
 @login_required
 def logout():
     logout_user()
+    flash('Logged out successfully!', category='success')
     return redirect(url_for('auth.login'))
 
 @auth.route('/sign-up', methods=['GET', 'POST'])
@@ -44,12 +45,18 @@ def sign_up():
             flash('An account with that email already exists.', category='error')
         elif len(email) < 3:
             flash('Email must be at least 3 characters long.', category='error')
+        elif len(email) > 75:
+            flash('Email must be at most 75 characters long.', category='error')
         elif len(first_name) < 1:
             flash('First name must be at least 1 character long.', category='error')
-        elif password1 != password2:
-            flash('Passwords do not match.', category='error')
+        elif len(first_name) > 25:
+            flash('First name must be at most 25 characters long.', category='error')
         elif len(password1) < 8:
             flash('Password must be at least 8 characters long.', category='error')
+        elif len(password1) > 20:
+            flash('Password must be at most 20 characters long.', category='error')
+        elif password1 != password2:
+            flash('Passwords do not match.', category='error')
         else:
             new_user = User(email=email, first_name=first_name, password=generate_password_hash(password1))
             db.session.add(new_user)

@@ -46,33 +46,35 @@
     </div>
 </div>
 <br />
+<br />
 <h3 align="center">Your Meals Today</h3>
-<ul class="list-group list-group-flush" id="notes">
-    {% for note in user.notes %}
-    <li class="list-group-item">
-        {{ note.data }}
-        <button type="button" class="close" onClick="deleteNote({{ note.id }})">
+<ul class="list-group list-group-flush" id="meals">
+    {% for meal in user.meals %}
+    <li class="list-group-item" style="background-color: #272c31">
+        {{ meal.desc }}
+        <button type="button" class="close text-white" onClick="deleteMeal({{ meal.id }})">
             <span aria-hidden="true">&times;</span>
         </button>
     </li>
     {% endfor %}
 </ul>
+<br />
 <form method="POST">
     <div class="form-group">
-        <textarea name="note" id="note" class="form-control" placeholder="List the contents of your meal here"></textarea>
+        <textarea name="desc" id="desc" class="form-control" placeholder="List the contents of your meal here"></textarea>
     </div>
     <div class="form-row">
         <div class="col">
-            <input type="text" class="form-control" placeholder="Calories">
+            <input name="cals" id="cals" type="text" class="form-control" placeholder="Calories">
         </div>
         <div class="col">
-            <input type="text" class="form-control" placeholder="Protein (grams)">
+            <input name="protein" id="protein" type="text" class="form-control" placeholder="Protein (grams)">
         </div>
         <div class="col">
-            <input type="text" class="form-control" placeholder="Carbs (grams)">
+            <input name="carbs" id="carbs" type="text" class="form-control" placeholder="Carbs (grams)">
         </div>
         <div class="col">
-            <input type="text" class="form-control" placeholder="Fat (grams)">
+            <input name="fat" id="fat" type="text" class="form-control" placeholder="Fat (grams)">
         </div>
     </div>
     <br />
