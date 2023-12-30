@@ -1,6 +1,6 @@
 from . import db
 from flask_login import UserMixin
-from sqlalchemy.sql import func
+from datetime import datetime
 
 class Meal(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -9,7 +9,7 @@ class Meal(db.Model):
     protein = db.Column(db.Integer)
     carbs = db.Column(db.Integer)
     fat = db.Column(db.Integer)
-    date = db.Column(db.DateTime(timezone=True), default=func.now())
+    date = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'))
 
 class User(db.Model, UserMixin):

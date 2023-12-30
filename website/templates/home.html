@@ -1,8 +1,9 @@
-<!-- ADD: display daily average for macros -->
-<!-- ADD: reset daily average -->
+<!-- *****TODO***** -->
+<!-- ADD: refresh meal list daily -->
 <!-- ADD: display macro totals for the day -->
-<!-- ADD: reset macro totals -->
-<!-- CHANGE: display a list containing meal# and macros of each meal (refresh daily) -->
+<!-- ADD: reset macro totals button (with warning) -->
+<!-- ADD: display daily average for macros -->
+<!-- ADD: reset daily averages button (with warning) -->
 
 {% extends "base.html" %}
 
@@ -49,9 +50,23 @@
 <br />
 <h3 align="center">Your Meals Today</h3>
 <ul class="list-group list-group-flush" id="meals">
+    <script src="https://moment.github.io/luxon/global/luxon.min.js">
+        var timeDisplay;
+        var utcTime;
+        var utcDate;
+        var localTime;
+    </script>
     {% for meal in user.meals %}
     <li class="list-group-item" style="background-color: #272c31">
-        {{ meal.desc }}
+        <h6 id="Time {{ meal.id }}"></h6>
+        <script>
+            timeDisplay = document.getElementById("Time {{ meal.id }}");
+            utcTime = "{{ meal.date.isoformat() }}";
+            utcDate = luxon.DateTime.fromISO(utcTime, { zone: 'utc' });
+            localTime = utcDate.toLocal().toLocaleString(luxon.DateTime.TIME_SIMPLE);
+            timeDisplay.innerHTML += localTime;
+        </script>
+        {{ meal.desc }}<br>{{ "Calories: " + (meal.cals)|string + " / Protein: " + (meal.protein)|string + "g / Carbs: " + (meal.carbs)|string + "g / Fat: " + (meal.fat)|string + "g" }}
         <button type="button" class="close text-white" onClick="deleteMeal({{ meal.id }})">
             <span aria-hidden="true">&times;</span>
         </button>
@@ -61,7 +76,7 @@
 <br />
 <form method="POST">
     <div class="form-group">
-        <textarea name="desc" id="desc" class="form-control" placeholder="List the contents of your meal here"></textarea>
+        <textarea name="desc" id="desc" class="form-control" placeholder="Enter a description of your meal here"></textarea>
     </div>
     <div class="form-row">
         <div class="col">
