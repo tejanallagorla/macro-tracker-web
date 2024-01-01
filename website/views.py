@@ -1,9 +1,12 @@
 from flask import Blueprint, render_template, request, flash, jsonify
 from flask_login import login_required, current_user
-from .models import Meal
+from .models import User, Meal
 from . import db
 import json
 import re
+from datetime import datetime
+import pytz
+from tzlocal import get_localzone
 
 views = Blueprint('views', __name__)
 
@@ -51,7 +54,7 @@ def home():
             db.session.commit()
             flash('Meal added!', category='success')
 
-    return render_template("home.html", user=current_user)
+    return render_template("home.html", user=current_user, cur_time=datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(get_localzone()))
 
 @views.route('/delete-meal', methods=['POST'])
 def delete_meal():
@@ -63,5 +66,35 @@ def delete_meal():
             db.session.delete(meal)
             db.session.commit()
     flash('Meal deleted!', category='success')
+    
+    return jsonify({})
+
+@views.route('/reset-totals', methods=['POST'])
+def reset_totals():
+    user = json.loads(request.data)
+    userId = user['userId']
+    user = User.query.get(userId)
+    cur_time = datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(get_localzone())
+    if user:
+        for meal in user.meals:
+            if meal.local_time.year == cur_time.year and meal.local_time.month == cur_time.month and meal.local_time.day == cur_time.day:
+                db.session.delete(meal)
+        db.session.commit()
+    flash('Totals have been reset!', category='success')
+    
+    return jsonify({})
+
+@views.route('/reset-averages', methods=['POST'])
+def reset_averages():
+    user = json.loads(request.data)
+    userId = user['userId']
+    user = User.query.get(userId)
+    cur_time = datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(get_localzone())
+    if user:
+        for meal in user.meals:
+            if meal.local_time.year != cur_time.year and meal.local_time.month != cur_time.month and meal.local_time.day != cur_time.day:
+                db.session.delete(meal)
+        db.session.commit()
+    flash('Averages have been reset!', category='success')
     
     return jsonify({})

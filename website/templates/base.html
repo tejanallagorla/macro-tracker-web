@@ -2,6 +2,7 @@
 <html class="bg-dark">
     <head>
         <meta charset="utf-8">
+        <meta http-equiv="refresh" content="900">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <link
             rel="stylesheet"
@@ -14,6 +15,18 @@
             href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css"
             crossorigin="anonymous"
         />
+        <script 
+            src="https://moment.github.io/luxon/global/luxon.min.js"
+        ></script>
+        <style>
+            .tooltip-inner {
+                background-color: #b72222;
+                color: #fff;
+            }
+            .tooltip.bs-tooltip-bottom .arrow::before {
+                border-bottom-color: #272c31;
+            }
+        </style>
         <title>{% block title %}Home{% endblock %}</title>
     </head>
     <body class="bg-dark text-white">
@@ -81,11 +94,15 @@
             integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
             crossorigin="anonymous"
         ></script>
-
         <script
             type="text/javascript"
             src="{{ url_for('static', filename='index.js') }}"
         ></script>
+        <script>
+            $(function () {
+              $('[data-toggle="tooltip"]').tooltip()
+            })
+        </script>
     </body>
     <br />
     <br />
