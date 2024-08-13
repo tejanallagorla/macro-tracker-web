@@ -4,14 +4,18 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from . import db
 from flask_login import login_user, login_required, logout_user, current_user
 
+# create auth blueprint
 auth = Blueprint('auth', __name__)
 
+# define login route inside auth
 @auth.route('/login', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
+        # read login form input
         email = request.form.get('email')
         password = request.form.get('password')
 
+        # validate login request
         user = User.query.filter_by(email=email).first()
         if user:
             if check_password_hash(user.password, password):
@@ -25,6 +29,7 @@ def login():
 
     return render_template("login.html", user=current_user)
 
+# define logout route inside auth
 @auth.route('/logout')
 @login_required
 def logout():
@@ -32,14 +37,17 @@ def logout():
     flash('Logged out successfully!', category='success')
     return redirect(url_for('auth.login'))
 
+# define sign up route inside auth
 @auth.route('/sign-up', methods=['GET', 'POST'])
 def sign_up():
     if request.method == 'POST':
+        # read sign up form input
         email = request.form.get('email')
         first_name = request.form.get('firstName')
         password1 = request.form.get('password1')
         password2 = request.form.get('password2')
 
+        # validate sign up request
         user = User.query.filter_by(email=email).first()
         if user:
             flash('An account with that email already exists.', category='error')

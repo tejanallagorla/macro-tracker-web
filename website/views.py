@@ -8,18 +8,22 @@ from datetime import datetime
 import pytz
 from tzlocal import get_localzone
 
+# create views blueprint
 views = Blueprint('views', __name__)
 
+# define default route inside views
 @views.route('/', methods=['GET', 'POST'])
 @login_required
 def home():
     if request.method == 'POST':
+        # read meal log form input
         desc = request.form.get('desc')
         cals = request.form.get('cals')
         protein = request.form.get('protein')
         carbs = request.form.get('carbs')
         fat = request.form.get('fat')
 
+        # validate meal log request
         if len(desc) < 1:
             flash('Meal description must be at least 1 character long.', category='error')
         elif len(desc) > 500:
@@ -56,7 +60,9 @@ def home():
 
     return render_template("home.html", user=current_user, cur_time=datetime.utcnow().replace(tzinfo=pytz.utc).astimezone(get_localzone()))
 
+# define delete meal route inside views
 @views.route('/delete-meal', methods=['POST'])
+@login_required
 def delete_meal():
     meal = json.loads(request.data)
     mealId = meal['mealId']
@@ -69,7 +75,9 @@ def delete_meal():
     
     return jsonify({})
 
+# define reset totals route inside views
 @views.route('/reset-totals', methods=['POST'])
+@login_required
 def reset_totals():
     user = json.loads(request.data)
     userId = user['userId']
@@ -84,7 +92,9 @@ def reset_totals():
     
     return jsonify({})
 
+# define reset averages route inside views
 @views.route('/reset-averages', methods=['POST'])
+@login_required
 def reset_averages():
     user = json.loads(request.data)
     userId = user['userId']
